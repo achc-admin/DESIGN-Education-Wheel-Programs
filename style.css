@@ -1,0 +1,60 @@
+:root{
+    color-scheme:dark;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    --bg:#2a4059; --ring:#1f4e6e; --text:#ffffff; --muted:#dbe4ec;
+    --care:#7399b8; --account:#4a9578; --survey:#94bb6e; --clinical:#347b9b; --reg:#7fb7bb;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:Montserrat,"Segoe UI",Helvetica,Arial,sans-serif}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 20px}
+  .stage{
+    width:100%;max-width:1280px;display:grid;gap:28px 24px;align-items:center;
+    grid-template-columns:1fr minmax(380px,520px) 1fr;
+    grid-template-areas:
+      ". care ."
+      "reg wheel account"
+      "clinical wheel survey";
+  }
+  .wheel{grid-area:wheel;width:100%;height:auto;overflow:visible}
+  .callout{
+    display:flex;gap:18px;align-items:flex-start;padding:16px 18px;
+    color:#8a9cb0;cursor:default;outline:none;transition:color .2s;
+  }
+  .callout svg{flex:none;width:52px;height:52px;fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+  .callout p{margin:0;font-size:17px;line-height:1.65;font-weight:400;color:inherit;max-width:34ch}
+  .callout b{color:inherit;font-weight:700}
+  .care{grid-area:care;justify-self:center}
+  .reg{grid-area:reg}.clinical{grid-area:clinical}
+  .account{grid-area:account}.survey{grid-area:survey}
+  
+  .seg{cursor:pointer;transition:opacity .2s,transform .2s;transform-origin:260px 260px;outline:none}
+  .seg path{stroke:var(--bg);stroke-width:3;stroke-linejoin:round;transition:filter .2s}
+  .seg text{font-weight:500;font-size:12.5px;letter-spacing:.06em;fill:#fff;text-anchor:middle;pointer-events:none}
+  .seg use{stroke:#fff;fill:none;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+  .ring{fill:var(--ring);transition:fill .2s}
+  .ringtext{font-size:11.5px;font-weight:500;letter-spacing:.14em;fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none;transition:opacity .2s}
+  
+  /* highlight logic */
+  .stage[data-active] .seg{opacity:.28}
+  .stage[data-active="care"] .seg.care,.stage[data-active="care"] .callout.care,
+  .stage[data-active="reg"] .seg.reg,.stage[data-active="reg"] .callout.reg,
+  .stage[data-active="clinical"] .seg.clinical,.stage[data-active="clinical"] .callout.clinical,
+  .stage[data-active="survey"] .seg.survey,.stage[data-active="survey"] .callout.survey,
+  .stage[data-active="account"] .seg.account,.stage[data-active="account"] .callout.account,
+  .stage[data-active="care"] .ringtext.care,.stage[data-active="reg"] .ringtext.reg,
+  .stage[data-active="clinical"] .ringtext.clinical,.stage[data-active="survey"] .ringtext.survey,
+  .stage[data-active="account"] .ringtext.account{opacity:1}
+  .callout.on{color:#fff}
+  .seg.on path{filter:brightness(1.1)}
+  .seg:focus-visible{opacity:1}
+  .callout.care{--c:var(--care)}.callout.reg{--c:var(--reg)}.callout.clinical{--c:var(--clinical)}
+  .callout.survey{--c:var(--survey)}.callout.account{--c:var(--account)}
+  
+  @media (max-width:980px){
+    .stage{grid-template-columns:1fr;grid-template-areas:"wheel" "care" "reg" "clinical" "account" "survey";max-width:560px}
+    .care{justify-self:stretch}
+    .wheel{max-width:480px;margin:0 auto}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}

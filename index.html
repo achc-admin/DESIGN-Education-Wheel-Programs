@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your Needs Wheel</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-care" viewBox="0 0 24 24"><path d="M2 4h5v5H2zM2 12h5v5H2zM3 6.5l1.2 1.2L6 5.5M3 14.5l1.2 1.2L6 13.5"/><circle cx="16" cy="5" r="2.5"/><path d="M11 21v-7a5 5 0 0 1 10 0v7M16 14v7"/></symbol>
+    <symbol id="i-reg" viewBox="0 0 24 24"><path d="M2 9l10-6 10 6zM5 11v7M9.5 11v7M14.5 11v7M19 11v7M3 21h18M3 18h18"/></symbol>
+    <symbol id="i-clinical" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><path d="M7 13c1-2.500 3-4 5-4s4 1.500 5 4M3 14h18l-2.500 7h-13z"/></symbol>
+    <symbol id="i-survey" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.500"/><circle cx="5" cy="10" r="2.500"/><circle cx="19" cy="10" r="2.500"/><circle cx="12" cy="14" r="2.500"/><path d="M7.500 21c0-2.500 2-4 4.500-4s4.500 1.500 4.500 4M1.500 17c0-2 1.500-3.500 3.500-3.500M22.500 17c0-2-1.500-3.500-3.500-3.500"/></symbol>
+    <symbol id="i-account" viewBox="0 0 24 24"><path d="M11 3h9a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5l-3 2.500V10h0a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM13 6h5M13 8h3"/><circle cx="5.500" cy="9.500" r="2.200"/><path d="M2 21v-4a3.500 3.500 0 0 1 7 0M9 17h10l1 3H9"/></symbol>
+  </defs>
+</svg>
+
+<main class="stage" id="stage">
+  <div class="callout care" data-id="care" tabindex="0">
+    <svg><use href="#i-care"/></svg>
+    <p><b>Customer care specialists</b> explore your needs to ensure a successful onboarding experience for your organization.</p>
+  </div>
+
+  <div class="callout reg" data-id="reg" tabindex="0">
+    <svg><use href="#i-reg"/></svg>
+    <p><b>Our regulatory team</b> keeps you informed about federal and state requirements.</p>
+  </div>
+
+  <div class="callout clinical" data-id="clinical" tabindex="0">
+    <svg><use href="#i-clinical"/></svg>
+    <p><b>Clinical experts</b> answer your questions throughout your accreditation cycle.</p>
+  </div>
+
+  <div class="callout account" data-id="account" tabindex="0">
+    <svg><use href="#i-account"/></svg>
+    <p><b>Account advisors</b> are dedicated to guiding your organization as a consistent point of contact.</p>
+  </div>
+
+  <div class="callout survey" data-id="survey" tabindex="0">
+    <svg><use href="#i-survey"/></svg>
+    <p><b>Surveyors</b> are selected for their experience and commitment to an educational approach.</p>
+  </div>
+
+  <svg class="wheel" viewBox="0 0 520 520" role="group" aria-label="Your needs wheel">
+    <g id="segs"></g>
+    <circle cx="260" cy="260" r="72" fill="#fff"/>
+    <g fill="none" stroke="#2a4059" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" transform="translate(238 222) scale(1.85)"><use href="#i-survey" width="24" height="24"/></g>
+    <text x="260" y="287" text-anchor="middle" font-size="15" font-weight="500" fill="#2a4059" letter-spacing=".04em">YOUR</text>
+    <text x="260" y="306" text-anchor="middle" font-size="15" font-weight="500" fill="#2a4059" letter-spacing=".04em">NEEDS</text>
+  </svg>
+</main>
+
+<script>
+const NS="http://www.w3.org/2000/svg", C=260;
+const data=[
+  {id:"care",    mid:-90, color:"var(--care)",    icon:"i-care",     label:["CUSTOMER CARE","SPECIALIST"]},
+  {id:"account", mid:-18, color:"var(--account)", icon:"i-account",  label:["ACCOUNT","ADVISOR"]},
+  {id:"survey",  mid:54,  color:"var(--survey)",  icon:"i-survey",   label:["SURVEY","TEAM"]},
+  {id:"clinical",mid:126, color:"var(--clinical)",icon:"i-clinical", label:["CLINICAL","STAFF"]},
+  {id:"reg",     mid:198, color:"var(--reg)",     icon:"i-reg",      label:["REGULATORY","TEAM"]}
+];
+const rad=d=>d*Math.PI/180;
+const pt=(r,a)=>[C+r*Math.cos(rad(a)),C+r*Math.sin(rad(a))];
+function arc(r1,r2,a0,a1){
+  const [x1,y1]=pt(r2,a0),[x2,y2]=pt(r2,a1),[x3,y3]=pt(r1,a1),[x4,y4]=pt(r1,a0);
+  return `M${x1} ${y1}A${r2} ${r2} 0 0 1 ${x2} ${y2}L${x3} ${y3}A${r1} ${r1} 0 0 0 ${x4} ${y4}Z`;
+}
+const el=(n,a={},p)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
+const segs=document.getElementById("segs"), stage=document.getElementById("stage");
+
+data.forEach(d=>{
+  const a0=d.mid-36, a1=d.mid+36;
+  const g=el("g",{class:"seg "+d.id,tabindex:0,role:"button","aria-label":d.label.join(" ")},segs);
+  el("path",{class:"ring",d:arc(210,250,a0,a1)},g);
+  const t=el("text",{class:"ringtext "+d.id,transform:`translate(${pt(231,d.mid)}) rotate(${Math.sin(rad(d.mid))>0.01?d.mid-90:d.mid+90})`},g);
+  t.textContent="EDUCATION";
+  t.style.textAnchor="middle";
+  el("path",{d:arc(78,206,a0,a1),fill:d.color},g);
+  const [x,y]=pt(142,d.mid);
+  el("use",{href:"#"+d.icon,x:x-15,y:y-34,width:30,height:30},g);
+  d.label.forEach((s,i)=>{const l=el("text",{x,y:y+10+i*15},g);l.textContent=s});
+  g.dataset.id=d.id;
+});
+
+// Make the ring text share the segment's opacity state
+document.querySelectorAll(".ringtext").forEach(t=>t.classList.add(t.getAttribute("class").split(" ")[1]));
+
+function set(id){
+  stage.dataset.active=id;
+  document.querySelectorAll("[data-id]").forEach(n=>n.classList.toggle("on",n.dataset.id===id));
+}
+function clear(){
+  delete stage.dataset.active;
+  document.querySelectorAll("[data-id]").forEach(n=>n.classList.remove("on"));
+}
+document.querySelectorAll("[data-id]").forEach(n=>{
+  n.addEventListener("mouseenter",()=>set(n.dataset.id));
+  n.addEventListener("mouseleave",clear);
+  n.addEventListener("focus",()=>set(n.dataset.id));
+  n.addEventListener("blur",clear);
+});
+</script>
+</body>
+</html>
