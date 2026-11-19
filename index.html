@@ -19,6 +19,7 @@
 </svg>
 
 <main class="stage" id="stage">
+  <svg class="trace" aria-hidden="true"><path id="tp"/><circle id="td" r="3.5"/></svg>
   <div class="callout care" data-id="care" tabindex="0">
     <span class="ico" role="img" aria-hidden="true"></span>
     <p><b>Customer care specialists</b> explore your needs to ensure a successful onboarding experience for your organization.</p>
@@ -91,12 +92,39 @@ data.forEach(d=>{
 // Make the ring text share the segment's opacity state
 document.querySelectorAll(".ringtext").forEach(t=>t.classList.add(t.getAttribute("class").split(" ")[1]));
 
+const tp=document.getElementById("tp"), td=document.getElementById("td"), ov=document.querySelector(".trace"), wheelEl=document.querySelector(".wheel");
+const mids={care:-90,account:-18,survey:54,clinical:126,reg:198};
+function drawTrace(id){
+  if(innerWidth<=980)return;
+  const s=stage.getBoundingClientRect(), w=wheelEl.getBoundingClientRect(), k=w.width/520;
+  ov.setAttribute("width",s.width); ov.setAttribute("height",s.height);
+  const a=mids[id]*Math.PI/180;
+  const x1=w.left-s.left+(C+256*Math.cos(a))*k, y1=w.top-s.top+(C+256*Math.sin(a))*k;
+  const co=stage.querySelector('.callout[data-id="'+id+'"]');
+  let x2,y2;
+  if(id==="care"){const c=co.getBoundingClientRect();x2=c.left+c.width/2-s.left;y2=c.bottom-s.top+6}
+  else if(id==="reg"||id==="clinical"){const p=co.querySelector("p").getBoundingClientRect();x2=p.right-s.left+14;y2=p.top+p.height/2-s.top}
+  else{const i=co.querySelector(".ico,svg").getBoundingClientRect();x2=i.left-s.left-14;y2=i.top+i.height/2-s.top}
+  tp.style.transition="none"; tp.setAttribute("d","M"+x1+" "+y1+"L"+x2+" "+y2);
+  const L=tp.getTotalLength();
+  tp.style.strokeDasharray=L; tp.style.strokeDashoffset=L; tp.style.opacity=1;
+  td.setAttribute("cx",x2); td.setAttribute("cy",y2); td.style.transition="none"; td.style.opacity=0;
+  tp.getBoundingClientRect();
+  tp.style.transition="stroke-dashoffset .45s cubic-bezier(.4,0,.2,1)"; tp.style.strokeDashoffset=0;
+  td.style.transition="opacity .2s .4s"; td.style.opacity=1;
+}
+function hideTrace(){
+  tp.style.transition="opacity .15s"; tp.style.opacity=0;
+  td.style.transition="opacity .15s"; td.style.opacity=0;
+}
 function set(id){
   stage.dataset.active=id;
+  drawTrace(id);
   document.querySelectorAll("[data-id]").forEach(n=>n.classList.toggle("on",n.dataset.id===id));
 }
 function clear(){
   delete stage.dataset.active;
+  hideTrace();
   document.querySelectorAll("[data-id]").forEach(n=>n.classList.remove("on"));
 }
 document.querySelectorAll("[data-id]").forEach(n=>{
