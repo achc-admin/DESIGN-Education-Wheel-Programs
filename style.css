@@ -23,6 +23,7 @@
     color:#8a9cb0;cursor:default;outline:none;transition:color .2s;
   }
   .callout svg{flex:none;width:52px;height:52px;fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+  .callout .ico{flex:none;width:42px;height:52px;margin:0 5px;background:currentColor;-webkit-mask:var(--care-icon) center/contain no-repeat;mask:var(--care-icon) center/contain no-repeat}
   .callout p{margin:0;font-size:17px;line-height:1.65;font-weight:400;color:inherit;max-width:34ch}
   .callout b{color:inherit;font-weight:700}
   .care{grid-area:care;justify-self:center}
